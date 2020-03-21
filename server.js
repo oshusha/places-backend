@@ -14,15 +14,19 @@ server.use(authorization);
 server.use(error);
 server.use(router);
 
-mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/places", {
+mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/mestodb", {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: true,
   useUnifiedTopology: true
-});
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("connected to db");
-});
+})
+  .then(() => {
+    console.log("connected to db");
+  })
+  .catch((err) => {
+    console.log('Error on start: ' + err.stack);
+    process.exit(1);
+  });
+
+
 server.listen(process.env.PORT || 3000, () => console.log("server started"));
