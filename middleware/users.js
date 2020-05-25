@@ -9,7 +9,7 @@ async function getUser(req, res, next) {
         res.status(404).json({ message: "Not Found" });
       }
     } catch (err) {
-        res.status(500).json({ message: err.message });
+      res.status(500).json({ message: err.message });
     }
 
     res.user = user;

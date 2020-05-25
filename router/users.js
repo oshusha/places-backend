@@ -15,9 +15,6 @@ router.get("/:id", getUser, (req, res) => {
   }
 });
 
-// Create user
-router.post("/", users.post);
-
 // Update info
 router.patch("/:id", getUser, users.update);
 

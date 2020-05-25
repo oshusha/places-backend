@@ -30,8 +30,12 @@ module.exports.post = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    await res.card.delete();
-    res.json({message: "Successfully deleted"});
+    if (res.card.owner == req.user._id) {
+      await res.card.delete();
+      res.json({message: "Successfully deleted"});
+    } else {
+      res.json({message: "Permission denied!"});
+    }
   } catch (err) {
     res.status(500).json({message: err.message});
   }
