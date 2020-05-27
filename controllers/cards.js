@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const Card = require("../models/card");
+const Card = require('../models/card');
 
 module.exports.get = async (req, res) => {
   try {
-    const cards = await Card.find().populate("owner");
+    const cards = await Card.find().populate('owner');
     res.json({data: cards});
   } catch (err) {
     res.status(500).json({message: err.message});
@@ -11,12 +11,10 @@ module.exports.get = async (req, res) => {
 };
 
 module.exports.post = async (req, res) => {
-  const {body, user} = req;
-  const {name, link} = body;
   const card = new Card({
-    name: name,
-    link: link,
-    owner: user._id,
+    name: req.body.name,
+    link: req.body.link,
+    owner: req.user._id,
     likes: []
   });
 
@@ -30,11 +28,11 @@ module.exports.post = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    if (res.card.owner == req.user._id) {
+    if (res.card.owner === req.user._id) {
       await res.card.delete();
-      res.json({message: "Successfully deleted"});
+      res.json({message: 'Successfully deleted'});
     } else {
-      res.json({message: "Permission denied!"});
+      res.status(403).json({message: 'Permission denied!'});
     }
   } catch (err) {
     res.status(500).json({message: err.message});

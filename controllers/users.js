@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require("../models/user");
+const User = require('../models/user');
 
 module.exports.get = async (req, res) => {
   try {
@@ -12,18 +12,18 @@ module.exports.get = async (req, res) => {
 };
 
 module.exports.post = async (req, res) => {
-  const saltRounds = 10;
-  const password = await bcrypt.hash(req.body.password, saltRounds);
-  const user = new User({
-    name: req.body.name,
-    password: password,
-    email: req.body.email,
-    about: req.body.about,
-    avatar: req.body.avatar
-  });
   try {
-    const newUser = await user.save();
-    await res.status(201).json({data: newUser});
+    const saltRounds = 10;
+    const cpassword = await bcrypt.hash(req.body.password, saltRounds);
+    const user = new User({
+      name: req.body.name,
+      password: cpassword,
+      email: req.body.email,
+      about: req.body.about,
+      avatar: req.body.avatar
+    });
+    await user.save();
+    await res.status(201).json({message: 'Кegistration successful!'});
   } catch (err) {
     await res.status(400).json({message: err.message});
   }
@@ -31,11 +31,11 @@ module.exports.post = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    if (res.user._id == req.user._id) {
+    if (res.user._id === req.user._id) {
       await res.user.delete();
-      res.json({message: "Successfully deleted"});
+      res.json({message: 'Successfully deleted'});
     } else {
-      res.json({message: "Permission denied!"});
+      res.status(403).json({message: 'Permission denied!'});
     }
   } catch (err) {
     res.status(500).json({message: err.message});
@@ -43,7 +43,7 @@ module.exports.delete = async (req, res) => {
 };
 
 module.exports.update = async (req, res) => {
-  if (res.user._id == req.user._id) {
+  if (res.user._id === req.user._id) {
     if (req.body.name != null) {
       res.user.name = req.body.name;
     }
@@ -51,7 +51,7 @@ module.exports.update = async (req, res) => {
       res.user.about = req.body.about;
     }
   } else {
-    res.json({message: "Permission denied!"});
+    res.status(403).json({message: 'Permission denied!'});
   }
   try {
     const updatedUser = await res.user.save({
@@ -65,10 +65,13 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports.updateAvatar = async (req, res) => {
-  if (req.body.avatar !== null) {
-    res.user.avatar = req.body.avatar;
+  if (res.user._id === req.user._id) {
+    if (req.body.avatar !== null) {
+      res.user.avatar = req.body.avatar;
+    }
+  } else {
+    res.status(403).json({message: 'Permission denied!'});
   }
-
   try {
     const updatedUser = await res.user.save({
       new: true,
@@ -84,9 +87,9 @@ module.exports.login = (req, res) => {
   const {email, password} = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id },"napoleon");
+      const token = jwt.sign({ _id: user._id },'napoleon', { expiresIn: '7d' });
       res.cookie('jwt',token, { httpOnly: true, maxAge: 604800 * 1000 });
-      res.send({message: "Авторизация прошла успешно!"});
+      res.send({message: 'Авторизация прошла успешно!'});
     })
     .catch((err) => {
       res.status(401).json({message: err.message});
