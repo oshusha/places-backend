@@ -12,8 +12,7 @@ router.use(authorization);
 router.use('/users', users);
 router.use('/cards', cards);
 router.all('*', (req, res) => {
-  res.status(404).json({ message: 'Not found!' });
+    res.status(404).json({ message: 'Not found!' });
 });
 
 module.exports = router;
-

@@ -66,9 +66,9 @@ GET /users - get all users
 
 GET /users/:userId - get user by id
 
-POST /signin - create user
+POST /signup - create user
 
-POST /signup - log in as user
+POST /signin - log in as user
 
 PATCH /users/me - update user info
 

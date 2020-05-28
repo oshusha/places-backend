@@ -11,9 +11,9 @@ router.get('/', users.get);
 
 // Get one user
 router.get('/:id', getUser, (req, res) => {
-  if (res.user) {
-    res.json(res.user);
-  }
+    if (res.user) {
+        res.json(res.user);
+    }
 });
 
 // Update info

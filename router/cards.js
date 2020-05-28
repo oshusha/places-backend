@@ -10,9 +10,9 @@ const { getCard } = require('../middleware/cards');
 router.get('/', cards.get);
 // Get one card
 router.get('/:id', getCard, (req, res) => {
-  if (res.card) {
-    res.json(res.card);
-  }
+    if (res.card) {
+        res.json(res.card);
+    }
 });
 
 // Create card
