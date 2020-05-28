@@ -21,7 +21,7 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/mestodb'
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
   .then(() => {
     console.log('connected to db');

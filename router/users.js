@@ -3,14 +3,13 @@ const express = require('express');
 const router = express.Router();
 
 const users = require('../controllers/users');
-const {getUser} = require('../middleware/users')
+const { getUser } = require('../middleware/users');
+const { upUser } = require('../middleware/update');
 
 // Get All Users
-router.get('/', function(req, res) {
-  res.send('What');
-});
+router.get('/', users.get);
 
-// Get one card
+// Get one user
 router.get('/:id', getUser, (req, res) => {
   if (res.user) {
     res.json(res.user);
@@ -18,13 +17,9 @@ router.get('/:id', getUser, (req, res) => {
 });
 
 // Update info
-router.patch('/:id', getUser, users.update);
+router.patch('/me', upUser, users.update);
 
 // Update avatar
-router.patch('/:id/avatar', getUser, users.updateAvatar);
-
-// Delete user
-router.delete('/:id', getUser, users.delete);
+router.patch('/me/avatar', upUser, users.updateAvatar);
 
 module.exports = router;
-

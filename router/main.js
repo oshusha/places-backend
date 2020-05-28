@@ -11,7 +11,7 @@ router.use(authorization);
 
 router.use('/users', users);
 router.use('/cards', cards);
-router.all('*', function(req, res){
+router.all('*', (req, res) => {
   res.status(404).json({ message: 'Not found!' });
 });
 

@@ -1,12 +1,12 @@
 const objectId = require('mongodb').ObjectID;
 const User = require('../models/user');
 
-async function getUser(req, res, next) {
-  if (objectId.isValid(req.params.id)) {
-    const user = await User.findById(req.params.id);
+async function upUser(req, res, next) {
+  if (objectId.isValid(req.user._id)) {
+    const user = await User.findById(req.user._id);
     try {
       if (user == null) {
-        res.status(404).json({ message: 'Not Found' });
+        res.status(401).json({ message: 'Hacking attempt!' });
       }
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -16,4 +16,4 @@ async function getUser(req, res, next) {
   }
   next();
 }
-module.exports = { getUser };
+module.exports = { upUser };
