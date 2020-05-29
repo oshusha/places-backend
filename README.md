@@ -66,14 +66,12 @@ GET /users - get all users
 
 GET /users/:userId - get user by id
 
-POST /users - create user
+POST /signin - create user
 
-DELETE /users/:userId - delete user by id
+POST /signup - log in as user
 
-PATCH /users/:userId - update user info
+PATCH /users/me - update user info
 
-PATCH /users/:userId/avatar - update avatar
-
-
+PATCH /users/me/avatar - update avatar
 
 

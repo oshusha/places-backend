@@ -2,26 +2,26 @@ const express = require('express');
 
 const router = express.Router();
 
-const users = require("../controllers/users");
-const {getUser} = require("../middleware/users")
+const users = require('../controllers/users');
+const { getUser } = require('../middleware/users');
+const { upUser } = require('../middleware/update');
 
 // Get All Users
-router.get("/", users.get);
+router.get('/', users.get);
 
-// Get one card
-router.get("/:id", getUser, (req, res) => {
-  if (res.user) {
-    res.json(res.user);
-  }
+// Get one user
+router.get('/:id', getUser, (req, res) => {
+    if (res.user) {
+        res.status(200).json(res.user);
+    } else {
+        res.status(404).json({ message: 'User not Found!' });
+    }
 });
 
-// Create user
-router.post("/", users.post);
-
 // Update info
-router.patch("/:id", getUser, users.update);
+router.patch('/me', upUser, users.update);
 
 // Update avatar
-router.patch("/:id/avatar", getUser, users.updateAvatar);
+router.patch('/me/avatar', upUser, users.updateAvatar);
 
 module.exports = router;

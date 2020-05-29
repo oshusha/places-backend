@@ -1,8 +1,7 @@
 {
-  "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
-  "plugins": ["prettier"],
+  "extends": ["airbnb-base"],
   "rules": {
-    "no-console": "off",
-    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "indent": [ "error", 4 ]
   }
 }
