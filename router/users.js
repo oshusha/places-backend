@@ -12,7 +12,9 @@ router.get('/', users.get);
 // Get one user
 router.get('/:id', getUser, (req, res) => {
     if (res.user) {
-        res.json(res.user);
+        res.status(200).json(res.user);
+    } else {
+        res.status(404).json({ message: 'User not Found!' });
     }
 });
 

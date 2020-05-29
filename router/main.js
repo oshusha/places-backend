@@ -4,6 +4,13 @@ const authorization = require('../middleware/authorization');
 const users = require('./users');
 const cards = require('./cards');
 
+
+router.get('/crash-test', () => {
+    setTimeout(() => {
+        throw new Error('Сервер сейчас упадёт!');
+    }, 0);
+});
+
 router.post('/signin', login);
 router.post('/signup', post);
 

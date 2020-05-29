@@ -15,18 +15,19 @@ module.exports.post = async (req, res) => {
     try {
         if (req.body.password.length < 8) {
             await res.status(400).json({ message: 'Password must be at least 8 characters!' });
+        } else {
+            const saltRounds = 10;
+            const cpassword = await bcrypt.hash(req.body.password, saltRounds);
+            const user = new User({
+                name: req.body.name,
+                password: cpassword,
+                email: req.body.email,
+                about: req.body.about,
+                avatar: req.body.avatar,
+            });
+            await user.save();
+            await res.status(201).json({message: 'Кegistration successful!'});
         }
-        const saltRounds = 10;
-        const cpassword = await bcrypt.hash(req.body.password, saltRounds);
-        const user = new User({
-            name: req.body.name,
-            password: cpassword,
-            email: req.body.email,
-            about: req.body.about,
-            avatar: req.body.avatar,
-        });
-        await user.save();
-        await res.status(201).json({ message: 'Кegistration successful!' });
     } catch (err) {
         await res.status(400).json({ message: err.message });
     }

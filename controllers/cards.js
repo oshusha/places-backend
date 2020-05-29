@@ -56,7 +56,7 @@ module.exports.unlike = async (req, res) => {
         await res.card.likes.pull(userId);
         const updatedCard = await res.card.save();
         res.json({ data: updatedCard });
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+        // eslint-disable-next-line node/no-unsupported-features/es-syntax
     } catch (err) {
         res.status(404).json({ message: 'Invalid card id' });
     }
