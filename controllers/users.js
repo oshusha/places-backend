@@ -26,7 +26,7 @@ module.exports.post = async (req, res) => {
                 avatar: req.body.avatar,
             });
             await user.save();
-            await res.status(201).json({message: 'Кegistration successful!'});
+            await res.status(201).json({ message: 'Кegistration successful!' });
         }
     } catch (err) {
         await res.status(400).json({ message: err.message });
