@@ -3,6 +3,8 @@ const { post, login } = require('../controllers/users');
 const authorization = require('../middleware/authorization');
 const users = require('./users');
 const cards = require('./cards');
+const NotFoundErr = require('../middleware/errors/not-found-err');
+const { posts, sign } = require('../middleware/validate/users');
 
 
 router.get('/crash-test', () => {
@@ -11,15 +13,15 @@ router.get('/crash-test', () => {
     }, 0);
 });
 
-router.post('/signin', login);
-router.post('/signup', post);
+router.post('/signin', sign, login);
+router.post('/signup', posts, post);
 
 router.use(authorization);
 
 router.use('/users', users);
 router.use('/cards', cards);
-router.all('*', (req, res) => {
-    res.status(404).json({ message: 'Not found!' });
+router.all('*', () => {
+    throw new NotFoundErr('Not found!');
 });
 
 module.exports = router;

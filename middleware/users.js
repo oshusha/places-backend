@@ -1,15 +1,18 @@
 const objectId = require('mongodb').ObjectID;
 const User = require('../models/user');
+const NotFoundErr = require('./errors/not-found-err');
+
 
 async function getUser(req, res, next) {
     if (objectId.isValid(req.params.id)) {
         const user = await User.findById(req.params.id);
         try {
             if (user == null) {
-                res.status(404).json({ message: 'Not Found' });
+                throw new NotFoundErr('User not found!');
             }
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            const e = new NotFoundErr('User not found!');
+            next(e);
         }
 
         res.user = user;

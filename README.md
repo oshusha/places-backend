@@ -1,5 +1,8 @@
 # Places server
 version : 1.0.0
+## Public test server
+
+https://www.oshusha.ru/ or 84.201.130.20
 ## How to develop the server
 
 **Initialize the environment**

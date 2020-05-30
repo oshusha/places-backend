@@ -1,6 +1,7 @@
 # Created by .ignore support plugin
 .idea/
 *.xml
+*.log
 node_modules/
 dist/
 /build/
