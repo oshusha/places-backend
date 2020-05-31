@@ -76,5 +76,3 @@ POST /signup - log in as user
 PATCH /users/me - update user info
 
 PATCH /users/me/avatar - update avatar
-
-

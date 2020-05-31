@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const AuthorizationErr = require('../middleware/errors/authorization-err');
 
 
 const userSchema = new mongoose.Schema({
@@ -30,11 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        validate: {
-            validator(link) {
-                return /^https?:\/\/\S+(?:\.[a-zA-Z]{2,8})\/\S+(?:jpg|jpeg|png)$/.test(link);
-            },
-        },
+        validate: [validator.isURL, 'invalid url'],
         required: true,
     },
 });
@@ -43,12 +40,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     return this.findOne({ email }).select('+password')
         .then((user) => {
             if (!user) {
-                return Promise.reject(new Error('Неправильные почта или пароль!'));
+                return Promise.reject(new AuthorizationErr('Incorrect email or password'));
             }
             return bcrypt.compare(password, user.password)
                 .then((matched) => {
                     if (!matched) {
-                        return Promise.reject(new Error('Неправильные почта или пароль!'));
+                        return Promise.reject(new AuthorizationErr('Incorrect email or password'));
                     }
                     return user;
                 });

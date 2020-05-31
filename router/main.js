@@ -9,7 +9,7 @@ const { posts, sign } = require('../middleware/validate/users');
 
 router.get('/crash-test', () => {
     setTimeout(() => {
-        throw new Error('Сервер сейчас упадёт!');
+        throw new Error('Server goes down');
     }, 0);
 });
 
@@ -21,7 +21,7 @@ router.use(authorization);
 router.use('/users', users);
 router.use('/cards', cards);
 router.all('*', () => {
-    throw new NotFoundErr('Not found!');
+    throw new NotFoundErr('Not found');
 });
 
 module.exports = router;

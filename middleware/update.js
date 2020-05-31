@@ -8,11 +8,10 @@ async function upUser(req, res, next) {
         const user = await User.findById(req.user._id);
         try {
             if (user == null) {
-                throw new AuthorizationErr('Hacking attempt!');
+                throw new AuthorizationErr('Hacking attempt');
             }
         } catch (err) {
-            const e = new InternalServerError('err.message');
-            next(e);
+            next(new InternalServerError('err.message'));
         }
 
         res.user = user;

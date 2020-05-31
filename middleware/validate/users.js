@@ -13,7 +13,9 @@ module.exports = {
             password: Joi.string().required().min(8),
             email: Joi.string().required().email(),
             about: Joi.string().required().min(2).max(30),
-            avatar: Joi.string().required().uri(),
+            avatar: Joi.string().required().regex(
+                /^https?:\/\/(www\.)?([a-zA-Z-]{1,61}\.)?([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\.[a-zA-Z]{2,})/,
+            ),
         }),
     }),
 
@@ -21,15 +23,14 @@ module.exports = {
         body: Joi.object().keys({
             name: Joi.string().required().min(2).max(30),
             about: Joi.string().required().min(2).max(30),
-            userId: Joi.string().alphanum().length(24),
         }),
     }),
 
     updateAvatar: celebrate({
         body: Joi.object().keys({
-            name: Joi.string().required().min(2).max(30),
-            avatar: Joi.string().required().uri(),
-            userId: Joi.string().alphanum().length(24),
+            avatar: Joi.string().required().regex(
+                /^https?:\/\/(www\.)?([a-zA-Z-]{1,61}\.)?([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\.[a-zA-Z]{2,})/,
+            ),
         }),
     }),
 

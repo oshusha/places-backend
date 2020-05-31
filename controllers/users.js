@@ -11,16 +11,14 @@ module.exports.get = async (req, res, next) => {
         const users = await User.find();
         await res.json({ data: users });
     } catch (err) {
-        const e = new InternalServerErr(err.message);
-        next(e);
+        next(new InternalServerErr(err.message));
     }
 };
 
 module.exports.post = async (req, res, next) => {
     try {
         if (req.body.password.length < 8) {
-            const e = new BadRequestErr('Password must be at least 8 characters!');
-            next(e);
+            next(new BadRequestErr('Password must be at least 8 characters'));
         } else {
             const saltRounds = 10;
             const cpassword = await bcrypt.hash(req.body.password, saltRounds);
@@ -32,11 +30,10 @@ module.exports.post = async (req, res, next) => {
                 avatar: req.body.avatar,
             });
             await user.save();
-            await res.status(201).json({ message: 'Кegistration successful!' });
+            await res.status(201).json({ message: 'Registration successful' });
         }
     } catch (err) {
-        const e = new BadRequestErr(err.message);
-        next(e);
+        next(new BadRequestErr(err.message));
     }
 };
 
@@ -54,8 +51,7 @@ module.exports.update = async (req, res, next) => {
         });
         res.json({ data: updatedUser });
     } catch (err) {
-        const e = new BadRequestErr(err.message);
-        next(e);
+        next(new BadRequestErr(err.message));
     }
 };
 
@@ -70,8 +66,7 @@ module.exports.updateAvatar = async (req, res, next) => {
         });
         res.json({ data: updatedUser });
     } catch (err) {
-        const e = new BadRequestErr(err.message);
-        next(e);
+        next(new BadRequestErr(err.message));
     }
 };
 
@@ -79,12 +74,11 @@ module.exports.login = (req, res, next) => {
     const { email, password } = req.body;
     return User.findUserByCredentials(email, password)
         .then((user) => {
-            const token = jwt.sign({ _id: user._id }, process.env.JWTSECRET, { expiresIn: '7d' });
+            const token = jwt.sign({ _id: user._id }, process.env.JWTSECRET || 'defone', { expiresIn: '7d' });
             res.cookie('jwt', token, { httpOnly: true, maxAge: 604800 * 1000 });
-            res.send({ message: 'Авторизация прошла успешно!' });
+            res.send({ message: 'Successful authorization' });
         })
         .catch(() => {
-            const e = new AuthorizationErr('Incorrect email or password!');
-            next(e);
+            next(new AuthorizationErr('Incorrect email or password'));
         });
 };

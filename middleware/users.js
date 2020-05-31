@@ -8,11 +8,10 @@ async function getUser(req, res, next) {
         const user = await User.findById(req.params.id);
         try {
             if (user == null) {
-                throw new NotFoundErr('User not found!');
+                throw new NotFoundErr('User not found');
             }
         } catch (err) {
-            const e = new NotFoundErr('User not found!');
-            next(e);
+            next(new NotFoundErr('User not found'));
         }
 
         res.user = user;

@@ -16,7 +16,7 @@ router.get('/:id', get, getUser, (req, res) => {
     if (res.user) {
         res.status(200).json(res.user);
     } else {
-        throw new NotFoundErr('User not found!');
+        throw new NotFoundErr('User not found');
     }
 });
 

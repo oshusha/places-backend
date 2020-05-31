@@ -10,8 +10,7 @@ module.exports.get = async (req, res, next) => {
         const cards = await Card.find().populate('owner');
         res.json({ data: cards });
     } catch (err) {
-        const e = new InternalServerErr(err.message);
-        next(e);
+        next(new InternalServerErr(err.message));
     }
 };
 
@@ -27,8 +26,7 @@ module.exports.post = async (req, res, next) => {
         const newCard = await card.save();
         res.status(201).json({ data: newCard });
     } catch (err) {
-        const e = new BadRequestErr('Cant create the card!');
-        next(e);
+        next(new BadRequestErr('Cant create the card'));
     }
 };
 
@@ -38,12 +36,10 @@ module.exports.delete = async (req, res, next) => {
             await res.card.delete();
             res.json({ message: 'Successfully deleted' });
         } else {
-            const e = new ForbiddenErr('Permission denied!');
-            next(e);
+            next(new ForbiddenErr('Permission denied'));
         }
     } catch (err) {
-        const e = new NotFoundErr('Invalid card id');
-        next(e);
+        next(new NotFoundErr('Invalid card id'));
     }
 };
 
@@ -54,8 +50,7 @@ module.exports.like = async (req, res, next) => {
         const updatedCard = await res.card.save();
         res.json({ data: updatedCard });
     } catch (err) {
-        const e = new NotFoundErr('Invalid card id');
-        next(e);
+        next(new NotFoundErr('Invalid card id'));
     }
 };
 
@@ -67,7 +62,6 @@ module.exports.unlike = async (req, res, next) => {
         res.json({ data: updatedCard });
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
     } catch (err) {
-        const e = new NotFoundErr('Invalid card id');
-        next(e);
+        next(new NotFoundErr('Invalid card id'));
     }
 };
