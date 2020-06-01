@@ -1,15 +1,17 @@
 const objectId = require('mongodb').ObjectID;
 const User = require('../models/user');
+const AuthorizationErr = require('./errors/authorization-err');
+const InternalServerError = require('./errors/internal-server-err');
 
 async function upUser(req, res, next) {
     if (objectId.isValid(req.user._id)) {
         const user = await User.findById(req.user._id);
         try {
             if (user == null) {
-                res.status(401).json({ message: 'Hacking attempt!' });
+                throw new AuthorizationErr('Hacking attempt');
             }
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            next(new InternalServerError('err.message'));
         }
 
         res.user = user;

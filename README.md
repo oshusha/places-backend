@@ -1,5 +1,8 @@
 # Places server
 version : 1.0.0
+## Public test server
+
+https://www.oshusha.ru/ or 84.201.130.20
 ## How to develop the server
 
 **Initialize the environment**
@@ -73,5 +76,3 @@ POST /signup - log in as user
 PATCH /users/me - update user info
 
 PATCH /users/me/avatar - update avatar
-
-
